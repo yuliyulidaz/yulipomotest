@@ -24,6 +24,7 @@ import { useTimerCore } from '../hooks/useTimerCore';
 import { useAIManager } from '../hooks/useAIManager';
 import { useXPManager } from '../hooks/useXPManager';
 import { useMobileCare } from '../hooks/useMobileCare';
+import { useVersionCheck } from '../hooks/useVersionCheck';
 
 interface TimerScreenProps {
   profile: CharacterProfile;
@@ -141,6 +142,9 @@ export const TimerScreen: React.FC<TimerScreenProps> = ({
   const startBtnRef = useRef<HTMLButtonElement>(null);
   const affinityRef = useRef<HTMLDivElement>(null);
   const hasTriggeredInitialCooldown = useRef(false);
+
+  const { hasUpdate, checkVersion } = useVersionCheck();
+
   const showToast = useCallback((msg: string) => {
     setToast(msg);
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
@@ -210,7 +214,16 @@ export const TimerScreen: React.FC<TimerScreenProps> = ({
     if (sessionInCycle !== 0 || isBreak) {
       hasTriggeredInitialCooldown.current = false;
     }
-  }, [sessionInCycle, isBreak]);
+    if (isBreak) {
+      checkVersion();
+    }
+  }, [sessionInCycle, isBreak, checkVersion]);
+
+  useEffect(() => {
+    if (hasUpdate) {
+      showToast("새로운 업데이트가 있어요. 새로고침 해주세요.");
+    }
+  }, [hasUpdate]);
 
   const handleStartToggle = () => {
     initAudioContext(); // Enable audio context on explicit user action

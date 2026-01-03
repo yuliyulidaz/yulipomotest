@@ -9,26 +9,26 @@ interface ReleaseNotesModalProps {
 
 const RELEASES = [
     {
-        version: 'v1.2.0',
+        version: 'v1.1.0',
         date: '2024.01',
         features: [
             {
                 icon: <Camera size={16} />,
                 color: 'rose',
                 title: '최애 사진 변경 기능',
-                desc: '이제 쉬는 시간마다 새로운 사진으로 교체할 수 있어요.'
+                desc: '이제 휴식 시간마다 새로운 사진으로 교체할 수 있어요.'
             },
             {
                 icon: <AlarmClock size={16} />,
                 color: 'amber',
                 title: '소리 및 햅틱 피드백',
-                desc: '시작과 종료 시 기분 좋은 알림음이 재생됩니다.)'
+                desc: '시작과 종료 시 기분 좋은 알림음이 재생됩니다.\n설정 < 자명종 아이콘'
             },
             {
                 icon: <Monitor size={16} />,
                 color: 'emerald',
                 title: '화면 최적화 & UX 개선',
-                desc: '모바일에서 화면 잘림 현상을 수정했습니다.\n이미지 크롭 시 확대/축소가 훨씬 부드러워졌어요.'
+                desc: '모바일에서 화면 잘림 현상을 수정했습니다.\n이미지 크롭 시 확대/축소가 훨씬 부드러워졌어요.\n기타 자잘한 오류 개선'
             }
         ]
     },

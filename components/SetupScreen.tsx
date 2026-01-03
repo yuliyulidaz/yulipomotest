@@ -11,6 +11,7 @@ import { buildQuizPrompt, buildRefreshQuizPrompt } from './AIPromptTemplates';
 import { PrivacyPolicyModal } from './PrivacyPolicyModal';
 import { ApiKeyHelpModal } from './ApiKeyHelpModal';
 import { generateWithFallback } from '../utils/GeminiDelegate';
+import { useVersionCheck } from '../hooks/useVersionCheck';
 
 const QUIZ_SCHEMA = {
   type: Type.OBJECT,
@@ -62,6 +63,12 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onComplete }) => {
   const nameInputRef = useRef<HTMLInputElement>(null);
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const apiKeyInputRef = useRef<HTMLInputElement>(null);
+
+  const { hasUpdate, checkVersion } = useVersionCheck();
+
+  useEffect(() => {
+    checkVersion();
+  }, [checkVersion]);
 
   useEffect(() => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -378,6 +385,12 @@ export const SetupScreen: React.FC<SetupScreenProps> = ({ onComplete }) => {
             <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-[90%] max-w-sm px-4 py-3 bg-[#FF7F50] text-white text-[11px] font-bold rounded-xl flex items-center gap-2 shadow-xl animate-in slide-in-from-bottom-2 duration-300">
               <AlertCircle size={14} className="shrink-0" />
               <span className="flex-1">{error}</span>
+            </div>
+          )}
+
+          {hasUpdate && (
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-[90%] max-w-sm px-4 py-3 bg-amber-500 text-white text-[11px] font-bold rounded-xl flex items-center gap-2 shadow-xl animate-in slide-in-from-bottom-2 duration-300">
+              <span className="flex-1 text-center">새로운 업데이트가 있어요. 새로고침 해주세요.</span>
             </div>
           )}
 
