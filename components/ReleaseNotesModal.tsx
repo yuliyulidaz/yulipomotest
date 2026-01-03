@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Bell, Camera, Volume2, Monitor, Sparkles } from 'lucide-react';
+import { Bell, Camera, AlarmClock, Monitor, Sparkles } from 'lucide-react';
 
 interface ReleaseNotesModalProps {
     isOpen: boolean;
@@ -19,7 +19,7 @@ const RELEASES = [
                 desc: '이제 쉬는 시간마다 새로운 사진으로 교체할 수 있어요.'
             },
             {
-                icon: <Volume2 size={16} />,
+                icon: <AlarmClock size={16} />,
                 color: 'amber',
                 title: '소리 및 햅틱 피드백',
                 desc: '시작과 종료 시 기분 좋은 알림음이 재생됩니다.)'
