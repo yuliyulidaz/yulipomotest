@@ -191,15 +191,29 @@ export const TimerScreen: React.FC<TimerScreenProps> = ({
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, [isActive, isBreak, triggerAIResponse]);
 
+  // Android 물리 뒤로가기 버튼 처리 (앱 종료 방지)
   useEffect(() => {
-    window.history.pushState(null, "", window.location.href);
+    // 1. 진입 시 히스토리 스택 추가 (뒤로가기 함정 설치)
+    window.history.pushState({ page: 'timer' }, "", window.location.href);
+
     const handlePopState = (e: PopStateEvent) => {
+      // 2. 뒤로가기 감지 시
       e.preventDefault();
+
+      // 3. 모달을 띄움 (X버튼과 동일 효과)
       setShowExitModal(true);
-      window.history.pushState(null, "", window.location.href);
+
+      // 4. 다시 빠져나간 히스토리를 채워넣음 (함정 재설치)
+      // 이렇게 해야 실수로 두 번 눌렀을 때도 앱이 꺼지지 않음
+      window.history.pushState({ page: 'timer' }, "", window.location.href);
     };
+
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      // 컴포넌트 언마운트 시 히스토리를 깔끔하게 정리하진 않음 (SPA 특성상 유지)
+    };
   }, []);
 
   useEffect(() => {
