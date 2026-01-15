@@ -44,6 +44,7 @@ export interface CharacterProfile {
   personality: string[];
   selectedDialogueStyles: DialogueStyles;
   isSoundEnabled?: boolean;
+  soundVolume?: number; // 1 to 4 (default 1)
   pendingImageSrc?: string | null; // 다음 세션에 적용될 대기 이미지
 
   xp: number;

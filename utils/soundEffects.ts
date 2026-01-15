@@ -20,7 +20,7 @@ export const initAudioContext = async () => {
     }
 };
 
-export const playSuccessSound = async (isSoundEnabled: boolean) => {
+export const playSuccessSound = async (isSoundEnabled: boolean, volumeLevel: number = 1) => {
     if (!isSoundEnabled) return;
 
     const ctx = getAudioContext();
@@ -35,6 +35,11 @@ export const playSuccessSound = async (isSoundEnabled: boolean) => {
     }
 
     const now = ctx.currentTime;
+
+    // Volume mapping: 1 -> 0.25, 2 -> 0.5, 3 -> 0.8, 4 -> 1.0
+    const volumeMap = [0.25, 0.5, 0.8, 1.0];
+    // Ensure index is valid (volumeLevel 1-based index 0-3)
+    const masterVolume = volumeMap[Math.min(Math.max(volumeLevel, 1), 4) - 1] || 0.1;
 
     // Define Notes: C5, E5, G5 (Major Triad)
     const notes = [
@@ -53,7 +58,7 @@ export const playSuccessSound = async (isSoundEnabled: boolean) => {
         const startTime = now + time;
 
         gain.gain.setValueAtTime(0, startTime);
-        gain.gain.linearRampToValueAtTime(0.2, startTime + 0.05); // Attack
+        gain.gain.linearRampToValueAtTime(masterVolume, startTime + 0.05); // Attack
         gain.gain.exponentialRampToValueAtTime(0.01, startTime + 0.8); // Smooth Decay
 
         osc.connect(gain);

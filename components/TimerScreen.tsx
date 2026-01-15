@@ -41,11 +41,12 @@ export const TimerScreen: React.FC<TimerScreenProps> = ({
 }) => {
 
   const [isSoundEnabled, setIsSoundEnabled] = useState(profile.isSoundEnabled ?? false);
+  const [soundVolume, setSoundVolume] = useState(profile.soundVolume ?? 1);
   const triggerAIResponseRef = useRef<(type: string) => void>(() => { });
 
   const playTimerSound = useCallback(() => {
-    playSuccessSound(isSoundEnabled);
-  }, [isSoundEnabled]);
+    playSuccessSound(isSoundEnabled, soundVolume);
+  }, [isSoundEnabled, soundVolume]);
 
   const {
     timeLeft, setTimeLeft, isActive, setIsActive, isBreak, setIsBreak,
@@ -64,15 +65,26 @@ export const TimerScreen: React.FC<TimerScreenProps> = ({
   const toggleSound = () => {
     const next = !isSoundEnabled;
     setIsSoundEnabled(next);
-    onUpdateProfile({ isSoundEnabled: next });
+    onUpdateProfile({ isSoundEnabled: next, soundVolume }); // Save volume too
 
     if (next) {
       initAudioContext(); // Enable audio context on explicit user action
-      playSuccessSound(true);
-      showToast("세션의 시작과 종료를 소리와 햅틱으로 알립니다.");
+      playSuccessSound(true, soundVolume);
+      showToast("소리 켜짐 (볼륨 " + soundVolume + ")");
     } else {
       showToast("소리 꺼짐");
     }
+  };
+
+  const handleVolumeChange = (vol: number) => {
+    setSoundVolume(vol);
+    if (!isSoundEnabled) {
+      setIsSoundEnabled(true);
+    }
+    onUpdateProfile({ isSoundEnabled: true, soundVolume: vol });
+    initAudioContext();
+    playSuccessSound(true, vol);
+    showToast(`볼륨 ${vol}로 변경`);
   };
 
   const {
@@ -436,6 +448,8 @@ export const TimerScreen: React.FC<TimerScreenProps> = ({
               onPrivacyOpen={() => { setIsPrivacyModalOpen(true); setIsSettingsOpen(false); }}
               onShowReleaseNotes={handleOpenReleaseNotes}
               hasNewReleaseNotes={hasNewReleaseNotes}
+              soundVolume={soundVolume}
+              onVolumeChange={handleVolumeChange}
             />
             <button onClick={() => setShowExitModal(true)} className={`p-2.5 rounded-full transition-all border border-transparent ${isDarkMode ? 'text-slate-400 hover:bg-white/10' : 'text-text-secondary hover:bg-slate-100'}`}><X size={20} /></button>
           </div>

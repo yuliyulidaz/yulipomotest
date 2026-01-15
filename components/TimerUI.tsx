@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Heart, Settings, Sun, Moon, Save, Key, Terminal, X, Coffee, Timer as TimerIcon, Pause, Play, SkipForward, RotateCcw, HelpCircle, Zap, ShieldCheck, MessageSquareHeart, AlarmClock, Camera } from 'lucide-react';
+import { Heart, Settings, Sun, Moon, Save, Key, Terminal, Coffee, Timer as TimerIcon, Pause, Play, SkipForward, RotateCcw, HelpCircle, Zap, ShieldCheck, MessageSquareHeart, AlarmClock, Camera } from 'lucide-react';
 import { CharacterProfile } from '../types';
 import { WATCHING_PHRASES } from '../WatchingPhrases';
 
@@ -48,9 +48,11 @@ interface SettingsMenuProps {
   onToggleSound: () => void;
   onShowReleaseNotes: () => void;
   hasNewReleaseNotes?: boolean;
+  soundVolume?: number;
+  onVolumeChange?: (vol: number) => void;
 }
 
-export const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, setIsOpen, isDarkMode, onToggleDarkMode, isBatterySaving, onToggleBatterySaving, onExport, onApiKeyOpen, onHistoryOpen, onShowGuide, onPrivacyOpen, isAdminMode, onShowAdminPanel, btnRef, isApiKeyAlert, isBreak, hasHistory, isSoundEnabled, onToggleSound, onShowReleaseNotes, hasNewReleaseNotes }) => {
+export const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, setIsOpen, isDarkMode, onToggleDarkMode, isBatterySaving, onToggleBatterySaving, onExport, onApiKeyOpen, onHistoryOpen, onShowGuide, onPrivacyOpen, isAdminMode, onShowAdminPanel, btnRef, isApiKeyAlert, isBreak, hasHistory, isSoundEnabled, onToggleSound, onShowReleaseNotes, hasNewReleaseNotes, soundVolume = 1, onVolumeChange }) => {
   const [showTempGlow, setShowTempGlow] = useState(false);
 
   useEffect(() => {
@@ -92,10 +94,40 @@ export const SettingsMenu: React.FC<SettingsMenuProps> = ({ isOpen, setIsOpen, i
           </div>
         </div>
 
-        {/* 알람 설정 */}
-        <div className="cursor-pointer" onClick={(e) => { e.stopPropagation(); onToggleSound(); }}>
-          <div className={`flex-none w-12 h-12 rounded-full border shadow-sm flex items-center justify-center transition-all active:scale-95 ${isSoundEnabled ? 'bg-rose-500/20 text-rose-500 border-rose-500/40' : (isDarkMode ? `bg-slate-800 ${darkIconColor} border-slate-700` : `bg-white border-slate-200 ${lightIconColor}`)}`}>
-            <AlarmClock size={20} className={isSoundEnabled ? "" : ""} />
+        {/* 알람 및 볼륨 설정 (확장형 슬라이더) */}
+        <div className="relative group flex items-center select-none" onClick={(e) => e.stopPropagation()}>
+          <div
+            className={`h-12 rounded-full border shadow-sm flex items-center transition-all duration-500 ease-out overflow-hidden ${isSoundEnabled
+              ? 'w-48 bg-rose-50 border-rose-100' // Expanded width
+              : `w-12 ${isDarkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}` // Collapsed width
+              } ${isDarkMode && isSoundEnabled ? 'bg-[#1F1114] border-rose-900/30' : ''}`}
+          >
+            {/* 1. Mute/Unmute Icon Section */}
+            <div
+              onClick={onToggleSound}
+              className={`w-12 h-full flex items-center justify-center cursor-pointer shrink-0 z-10 ${isSoundEnabled
+                ? 'text-rose-500'
+                : (isDarkMode ? darkIconColor : lightIconColor)
+                }`}
+            >
+              <AlarmClock size={20} className={isSoundEnabled ? "fill-current animate-pulse-slow" : ""} />
+            </div>
+
+            {/* 2. Volume Slider Section (Visible only when Enabled) */}
+            <div className={`flex-1 flex items-center justify-between pr-3 pl-1 h-full transition-opacity duration-300 ${isSoundEnabled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+              {[1, 2, 3, 4].map((level) => (
+                <div
+                  key={level}
+                  onClick={() => onVolumeChange?.(level)}
+                  className="w-6 h-full flex items-center justify-center cursor-pointer group/bar"
+                >
+                  <div className={`w-1.5 rounded-full transition-all duration-300 ${soundVolume && soundVolume >= level
+                    ? 'bg-rose-400 h-6'
+                    : `bg-rose-200/50 h-3 group-hover/bar:h-5 group-hover/bar:bg-rose-300 ${isDarkMode ? 'bg-rose-900/40' : ''}`
+                    }`} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
