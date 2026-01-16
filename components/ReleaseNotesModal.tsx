@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Bell, Camera, AlarmClock, Monitor, Sparkles, Smartphone } from 'lucide-react';
+import { Bell, Camera, AlarmClock, Monitor, Sparkles, Smartphone, Music } from 'lucide-react';
 
 interface ReleaseNotesModalProps {
     isOpen: boolean;
@@ -17,6 +17,12 @@ const RELEASES = [
                 color: 'amber',
                 title: '볼륨 조절 기능 추가',
                 desc: '알람 버튼을 누르면 바로 4단계로 볼륨을 조절할 수 있습니다.'
+            },
+            {
+                icon: <Music size={16} />,
+                color: 'violet',
+                title: '알람 소리 변경',
+                desc: '종료 시간을 놓치지 않도록, 조금 더 길고 밝은 음악으로 변경했습니다.'
             }
         ]
     },
