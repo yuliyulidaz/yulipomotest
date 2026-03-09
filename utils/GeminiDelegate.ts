@@ -4,6 +4,7 @@ const MODEL_NICKNAMES: Record<string, string> = {
   'gemini-2.5-flash': '2.5',
   'gemini-2.5-flash-lite': '2.5L',
   'gemini-3-flash-preview': '3.0', 
+  'gemini-3.1-flash-lite-preview': '3.1L',
   'gemini-1.5-pro': 'PRO',
   'gemini-1.5-flash': '1.5'
 };
@@ -35,6 +36,7 @@ const getNextTurnPriority = (): string[] => {
     ];
   } else {
     return [
+      'gemini-3.1-flash-lite-preview',
       'gemini-2.5-flash',
       'gemini-2.5-flash-lite'
     ];

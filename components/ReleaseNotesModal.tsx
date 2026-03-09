@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Bell, Camera, AlarmClock, Monitor, Sparkles, Smartphone, Music } from 'lucide-react';
+import { Bell, Camera, AlarmClock, Monitor, Sparkles, Smartphone, Music, Zap } from 'lucide-react';
 
 interface ReleaseNotesModalProps {
     isOpen: boolean;
@@ -8,6 +8,18 @@ interface ReleaseNotesModalProps {
 }
 
 const RELEASES = [
+    {
+        version: 'v1.1.3',
+        date: '2026.03',
+        features: [
+            {
+                icon: <Zap size={16} />,
+                color: 'emerald',
+                title: '새 모델 추가',
+                desc: 'gemini-3.1-flash-lite을 추가하여, 대사 호출 안정성을 높였습니다.'
+            }
+        ]
+    },
     {
         version: 'v1.1.2',
         date: '2024.01',
