@@ -155,7 +155,7 @@ export const ReleaseNotesModal: React.FC<ReleaseNotesModalProps> = ({
                     </div>
 
                     {/* 버전 탭 */}
-                    <div className="flex gap-2 justify-center overflow-x-auto pb-2">
+                    <div className="flex gap-2 justify-start overflow-x-auto pb-2 px-1">
                         {RELEASES.map((release) => (
                             <button
                                 key={release.version}
