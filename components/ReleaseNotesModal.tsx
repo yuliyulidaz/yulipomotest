@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Bell, Camera, AlarmClock, Monitor, Sparkles, Smartphone, Music, Zap } from 'lucide-react';
+import { Bell, Camera, AlarmClock, Monitor, Sparkles, Smartphone, Music, Zap, Save } from 'lucide-react';
 
 interface ReleaseNotesModalProps {
     isOpen: boolean;
@@ -8,6 +8,18 @@ interface ReleaseNotesModalProps {
 }
 
 const RELEASES = [
+    {
+        version: 'v1.1.4',
+        date: '2026.03',
+        features: [
+            {
+                icon: <Save size={16} />,
+                color: 'emerald',
+                title: '저장 후 동작 변경',
+                desc: '파일 저장 후 바로 첫 화면으로 돌아가지 않고, 사용자가 선택할 수 있도록 수정하였습니다.'
+            }
+        ]
+    },
     {
         version: 'v1.1.3',
         date: '2026.03',
