@@ -60,7 +60,7 @@ export const SaveConfirmModal: React.FC<SaveConfirmModalProps> = ({
 
           <div className="space-y-3">
             <h3 className={`text-xl font-black tracking-tight ${isDarkMode ? 'text-slate-100' : 'text-text-primary'}`}>
-              {characterName}과의 시간을 저장한 파일을 다운로드 했어요.
+              {characterName} 와(과)의 시간을 저장한 파일을 다운로드 했어요.
             </h3>
             <p className={`text-sm font-medium leading-relaxed px-4 ${isDarkMode ? 'text-slate-400' : 'text-text-secondary'}`}>
               첫 화면의 Load버튼을 통해 불러올 수 있습니다.<br/>첫 화면으로 돌아가시겠어요?
