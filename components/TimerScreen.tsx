@@ -6,6 +6,7 @@ import { ObservationDiary } from './ObservationDiary';
 import { OnboardingGuide } from './OnboardingGuide';
 import { ApiKeyExpiryModal } from './ApiKeyExpiryModal';
 import { ExitConfirmModal } from './ExitConfirmModal';
+import { SaveConfirmModal } from './SaveConfirmModal';
 import { EnergySavingOverlay } from './EnergySavingOverlay';
 import { PrivacyPolicyModal } from './PrivacyPolicyModal';
 import { DiaryHistoryModal } from './DiaryHistoryModal';
@@ -135,6 +136,7 @@ export const TimerScreen: React.FC<TimerScreenProps> = ({
   const [resetHoldProgress, setResetHoldProgress] = useState(0);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showChoiceModal, setShowChoiceModal] = useState(false);
+  const [showSaveConfirmModal, setShowSaveConfirmModal] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
@@ -299,12 +301,8 @@ export const TimerScreen: React.FC<TimerScreenProps> = ({
     linkElement.setAttribute('download', filename);
     linkElement.click();
     setIsSettingsOpen(false);
-    showToast("저장되었습니다! 초기 화면으로 이동합니다.");
-
-    // 파일 다운로드 트리거 후, 약간의 지연 시간을 두고 리셋 (다운로드 처리 보장)
-    setTimeout(() => {
-      onReset();
-    }, 500);
+    setShowChoiceModal(false);
+    setShowSaveConfirmModal(true);
   };
 
   const handleResetStart = () => {
@@ -411,6 +409,7 @@ export const TimerScreen: React.FC<TimerScreenProps> = ({
       <AffinityGuideModal isOpen={showAffinityGuide} onClose={() => setShowAffinityGuide(false)} currentLevel={profile.level} isDarkMode={isDarkMode} characterName={profile.name} />
       <PrivacyPolicyModal isOpen={isPrivacyModalOpen} onClose={() => setIsPrivacyModalOpen(false)} isDarkMode={isDarkMode} />
       <ReleaseNotesModal isOpen={showReleaseNotes} onClose={() => setShowReleaseNotes(false)} isDarkMode={isDarkMode} />
+      <SaveConfirmModal isOpen={showSaveConfirmModal} onClose={() => setShowSaveConfirmModal(false)} onGoHome={onReset} characterName={profile.name} isDarkMode={isDarkMode} />
       {(isApiKeyModalOpen || showExitModal || showAffinityGuide || isPrivacyModalOpen || showHistoryModal || showReleaseNotes) && <div className="fixed inset-0 z-[45] bg-transparent" onClick={() => { setIsApiKeyModalOpen(false); setShowExitModal(false); setShowAffinityGuide(false); setIsPrivacyModalOpen(false); setShowHistoryModal(false); setShowReleaseNotes(false); }} />}
 
       <main className="w-full min-h-[100dvh] flex flex-col items-center justify-center relative p-4 md:p-8 pt-8 pb-32">
